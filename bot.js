@@ -38,3 +38,27 @@ var retweet=function() {
 retweet();
 //Retweet after every 15 min. 
 setInterval(retweet,900000);
+
+//************ Tweet a thanks message when someone follows you ****************
+var stream=Twitter.stream('user');
+
+stream.on('follow',function(event) {
+	var name=event.source.name; //Name
+	var screenName=event.source.screen_name; //Username or Twitter handle
+	tweetNow('@' + screenName + ' Thanks for following'); // Sets up the tweet message
+	console.log('Thank you @'+screenName+" for following me");
+});
+function tweetNow(tweetTxt) {
+	 var tweet = {
+        status: tweetTxt
+    }
+// Posts a tweet on your bot account tagging the user that followed you.
+    Twitter.post('statuses/update', tweet, function(err, data, response) {
+      if(err){
+        console.log("Error in Replying");
+      }
+      else{
+        console.log("Tweeted successfully");
+      }
+    });
+}
